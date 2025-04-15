@@ -8,6 +8,34 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [graphData, setGraphData] = useState({ nodes: [], links: [] });
 
+  const fetchPeople = async () => {
+    try {
+      const res = await fetch('http://localhost:8080/api/people');
+      const people = await res.json();
+    
+      const nodes = people.map(p => ({
+        id: p.name,
+        label: p.name
+      }));
+  
+      setGraphData({ nodes, links: [] });
+    } catch(err) {
+      console.error('Failed to fetch people:', err)
+    }
+  };
+
+  const createPerson = async (name) => {
+    try {
+      await fetch('http://localhost:8080/api/people', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name }),
+      });
+    } catch(err) {
+      console.error('Failed to create person:', err);
+    }
+  }
+
   useEffect(() => {
     let timers = [];
 
@@ -29,8 +57,9 @@ const App = () => {
     if (e.key === 'Enter' && username.trim()) {
       // fade out input
       setFade(false);
-      setTimeout(() => {
-        setGraphData({ nodes: [{ id: username }], links: [] });
+      setTimeout(async() => {
+        await createPerson(username);
+        await fetchPeople()
         setStep(3); // move to graph
       }, 500); // wait for fade
     }
@@ -91,7 +120,7 @@ const App = () => {
             nodeAutoColorBy="id"
             linkDirectionalParticles={2}
             linkDirectionalArrowLength={4}
-            nodeLabel="id"
+            nodeLabel="label"
             width={window.innerWidth}
             height={window.innerHeight}
           />
