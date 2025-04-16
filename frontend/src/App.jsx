@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
+import ButtonPanel from './components/ButtonPanel';
 
 const App = () => {
   const [step, setStep] = useState(0); // 0: welcome, 1: prompt, 2: input, 3: graph
@@ -10,15 +11,25 @@ const App = () => {
 
   const fetchPeople = async () => {
     try {
-      const res = await fetch('http://localhost:8080/api/people');
-      const people = await res.json();
-    
+      const [peopleRes, connectionsRes] = await Promise.all([
+        fetch("http://localhost:8080/api/people"),
+        fetch("http://localhost:8080/api/connections")
+      ]);
+      
+      const people = await peopleRes.json();
+      const connections = await connectionsRes.json();
+      
       const nodes = people.map(p => ({
         id: p.name,
         label: p.name
       }));
-  
-      setGraphData({ nodes, links: [] });
+      
+      const links = connections.map(c => ({
+        source: c.source.name,
+        target: c.target.name
+      }));
+
+      setGraphData({ nodes, links });
     } catch(err) {
       console.error('Failed to fetch people:', err)
     }
@@ -123,6 +134,38 @@ const App = () => {
             nodeLabel="label"
             width={window.innerWidth}
             height={window.innerHeight}
+          />
+
+          <ButtonPanel
+            onAdd={async () => {
+              const newName = prompt("Enter name to connect:");
+              if(!newName || !username) return;
+
+              await fetch("http://localhost:8080/api/people", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name:newName }),
+              });
+
+              const res = await fetch("http://localhost:8080/api/people");
+              const people = await res.json();
+
+              const source = people.find(p => p.name === username);
+              const target = people.find(p => p.name === newName);
+
+              if (source && target) {
+                await fetch("http://localhost:8080/api/connections", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ sourceId: source.id, targetId: target.id }),
+                });
+              }
+
+              await fetchPeople();
+            }}
+            onRemove={() => {
+              console.log("Remove button clicked");
+            }}
           />
         </div>
       )}

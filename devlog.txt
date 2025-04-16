@@ -1,0 +1,18 @@
+04/15 - julian
+-added + and - buttons
+-hooked + button to backend where when clicked:
+    1. prompt for new person's name ("who you know")
+    2. create that person in the backend
+    3. create a connection to them from the current user
+-to hook to backend:
+    1. added ConnectionController, ConnectionRepo, and Connection model
+    Problem face:
+        1. spring security blocked the frontend from accessing endpoints
+        2. source and target (ConnectionModel) were sent as full objects and Spring boot couldnt deserialize
+           no visual link appeared even with proper backend return
+    Solution:
+        1. global CORS config
+        2. createConnection in ConnectionController
+            -send only sourceID and targetId
+            -uses Map<String, Long> body
+           update frontend onAdd (App.jsx) to send just IDs
