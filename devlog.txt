@@ -16,3 +16,6 @@
             -send only sourceID and targetId
             -uses Map<String, Long> body
            update frontend onAdd (App.jsx) to send just IDs
+
+04/19 - nathan
+- try deploying postgres with docker

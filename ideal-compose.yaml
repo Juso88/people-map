@@ -1,0 +1,28 @@
+services:
+  backend:
+    build: backend
+    ports:
+      - "8080:8080"
+    networks:
+      - backend-db-net
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: peoplemap
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - backend-db-net
+  frontend:
+    build: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+volumes:
+  db_data:
+networks:
+  backend-db-net:
+  
