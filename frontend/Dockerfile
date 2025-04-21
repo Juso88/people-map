@@ -1,11 +1,17 @@
 FROM node:23-alpine
 
-EXPOSE 80
 WORKDIR /app
 
 COPY package.json .
-COPY package-lock.json .
-COPY public/ /app/public
-COPY src/ /app/src
+
+RUN npm install
+
+RUN npm i -g serve
+
+COPY . .
+
 RUN npm run build
-COPY dist/ /app/dist
+
+EXPOSE 3000
+
+CMD [ "serve", "-s", "dist" ]
