@@ -19,8 +19,7 @@ services:
       - backend-db-net
     depends_on:
       db:
-        condition: service_healthy
-        restart: true
+        condition: service_started
   frontend:
     build: frontend
     ports:
@@ -33,4 +32,3 @@ volumes:
   db_data:
 networks:
   backend-db-net:
-  

@@ -1,17 +1,14 @@
-FROM node:23-alpine
+FROM node:23-slim AS build
 
 WORKDIR /app
-
-COPY package.json .
+COPY . /app
 
 RUN npm install
-
-RUN npm i -g serve
-
-COPY . .
-
 RUN npm run build
 
-EXPOSE 3000
-
-CMD [ "serve", "-s", "dist" ]
+FROM ubuntu
+RUN apt update
+RUN apt install -y nginx
+COPY --from=build /app/dist /var/www/html/
+EXPOSE 80
+CMD ["nginx","-g","daemon off;"]

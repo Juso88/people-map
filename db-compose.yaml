@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
-      POSTGRES_DB: postgres
+      POSTGRES_DB: peoplemap
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
