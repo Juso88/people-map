@@ -37,5 +37,5 @@ ARG DEPENDENCY=/workdir/server/target/dependency
 COPY --from=prepare-production ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=prepare-production ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=prepare-production ${DEPENDENCY}/BOOT-INF/classes /app
-WORKDIR /app
-ENTRYPOINT ["java","-cp", "com.cs3560.backend.peoplemap"]
+WORKDIR /
+CMD ["/bin/bash"]

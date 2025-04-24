@@ -1,0 +1,11 @@
+# syntax=docker/dockerfile:1.4
+
+FROM --platform=$BUILDPLATFORM maven:3.9.9-eclipse-temurin AS builder
+WORKDIR /workdir/server
+COPY pom.xml /workdir/server/pom.xml
+RUN mvn dependency:go-offline
+
+COPY src /workdir/server/src
+RUN mvn install -DskipTests -Dmaven.javadoc.skip=true
+
+RUN mvn springboot:run
