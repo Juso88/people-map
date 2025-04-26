@@ -38,4 +38,4 @@ COPY --from=prepare-production ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=prepare-production ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=prepare-production ${DEPENDENCY}/BOOT-INF/classes /app
 WORKDIR /
-CMD ["/bin/bash"]
+ENTRYPOINT ["java","-cp","app:/app/lib/*","com.cs3560.backend.peoplemap"]

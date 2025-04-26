@@ -20,6 +20,10 @@ services:
     depends_on:
       db:
         condition: service_started
+    environment:
+      - JDBC_DATABASE_URL=postgresql://localhost:5432/postgres
+      - JDBC_DATABASE_USERNAME=postgres
+      - JDBC_DATABASE_PASSWORD=123
   frontend:
     build: frontend
     ports:
