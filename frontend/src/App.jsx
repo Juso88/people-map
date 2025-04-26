@@ -8,6 +8,7 @@ const App = () => {
   const [fade, setFade] = useState(true);
   const [username, setUsername] = useState('');
   const [graphData, setGraphData] = useState({ nodes: [], links: [] });
+  const [selectedNode, setSelectedNode] = useState(null);
 
   const fetchPeople = async () => {
     try {
@@ -75,7 +76,9 @@ const App = () => {
       }, 500); // wait for fade
     }
   };
-
+  const handleNodeClick = (node) => {
+    setSelectedNode(node);
+  }
   return (
     <div
       style={{
@@ -126,6 +129,9 @@ const App = () => {
             height: '100%',
           }}
         >
+        <div className="selected-node-display" style={{ position: 'sticky', top: 10, left: 10, zIndex: 1 }}>
+          {selectedNode} </div>
+
           <ForceGraph2D
             graphData={graphData}
             nodeAutoColorBy="id"
@@ -134,6 +140,8 @@ const App = () => {
             nodeLabel="label"
             width={window.innerWidth}
             height={window.innerHeight}
+            onNodeClick={handleNodeClick}
+            onNodeRightClick={handleNodeRightClick}
           />
 
           <ButtonPanel
