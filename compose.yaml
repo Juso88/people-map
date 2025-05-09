@@ -11,27 +11,6 @@ services:
       - backend-db-net
     ports:
       - "5432:5432"
-  backend:
-    build: backend
-    ports:
-      - "8080:8080"
-    networks:
-      - backend-db-net
-    depends_on:
-      db:
-        condition: service_started
-    environment:
-      - JDBC_DATABASE_URL=postgresql://localhost:5432/postgres
-      - JDBC_DATABASE_USERNAME=postgres
-      - JDBC_DATABASE_PASSWORD=123
-  frontend:
-    build: frontend
-    ports:
-      - "80:80"
-    depends_on:
-      backend:
-        condition: service_started
-        restart: true
 volumes:
   db_data:
 networks:
