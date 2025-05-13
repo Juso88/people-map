@@ -31,3 +31,9 @@ export const createConnection = async (sourceId, targetId) => {
     body: JSON.stringify({ sourceId, targetId }),
   });
 };
+
+export const deleteConnection = async (connectionId) => {
+    await fetch(`http://localhost:8080/api/connections/${connectionId}`, {
+        method: 'DELETE',
+    });
+};

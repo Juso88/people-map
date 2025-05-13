@@ -3,7 +3,7 @@ import React from 'react';
 import GraphTitle from './GraphTitle';
 import GraphDisplay from './GraphDisplay';
 import ButtonPanel from './ButtonPanel';
-import { createPerson, createConnection } from '../features/api';
+import { createPerson, createConnection, deleteConnection } from '../features/api';
 
 const GraphCanvas = ({ graphData, username, refreshGraph }) => {
 
@@ -25,11 +25,26 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
     await refreshGraph();
   };
 
+  const handleRemove = async () => {
+    const nameToRemove = prompt("Enter name you want to remove:");
+    if (!nameToRemove) return;
+
+    try {
+        await fetch(`http://localhost:8080/api/connections/by-name/${nameToRemove}`, {
+            method: 'DELETE'
+        });
+        await refreshGraph();
+    } catch (err) {
+        console.error("Failed to remove connection:", err);
+    }
+};
+
+
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
       <GraphTitle />
       <GraphDisplay graphData={graphData} />
-      <ButtonPanel onAdd={handleAdd} onRemove={() => console.log("Remove clicked")} />
+      <ButtonPanel onAdd={handleAdd} onRemove={handleRemove} />
     </div>
   );
 };
