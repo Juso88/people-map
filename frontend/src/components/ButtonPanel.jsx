@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ButtonPanel = ({ onAdd, onRemove, onUpdate }) => {
+const ButtonPanel = ({ onAdd, onRemove, onUpdate, selectedNodeText }) => {
   return (
     <div style={{
       position: 'absolute',
@@ -13,6 +13,7 @@ const ButtonPanel = ({ onAdd, onRemove, onUpdate }) => {
       <button style={buttonStyle} onClick={onAdd}>+ Add</button>
       <button style={buttonStyle} onClick={onUpdate}>~ Update</button>
       <button style={buttonStyle} onClick={onRemove}>- Remove</button>
+      <div id='selected-node' >{selectedNodeText}</div>
     </div>
   );
 };
