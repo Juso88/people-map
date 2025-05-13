@@ -45,14 +45,12 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
     }
 
     if (inputMode === 'add') {
-      await createPersonAndConnect(username, inputValue);
-      return;
+      await createPerson(inputValue);
     }
 
 
     if (inputMode === 'remove') {
       await deleteConnectionByName(inputValue);
-      return;
     }
 
     //if the update comes from the button, we should update connection.
@@ -60,12 +58,10 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
     if (inputMode === 'update') {
       const [oldTargetId, newTargetId] = inputValue.split(' ');
       await updateConnection(username, oldTargetId, newTargetId);
-      return;
     }
 
     if (inputMode === 'newConnect') {
       await createConnection(selectedNode.label, inputValue);
-      return;
     }
     setInputMode(null);
     await refreshGraph();
@@ -98,6 +94,7 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
         onUpdate={handleUpdate}
         onInfo={showInfoBox}
         onNewConnect={handleNewConnect}
+        onRefresh={refreshGraph}
         selectedNodeText={selectedNode !== null ? selectedNode.label : ""} />
 
       {inputMode && (

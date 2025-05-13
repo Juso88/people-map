@@ -1,7 +1,7 @@
 import React from 'react';
-import { MdOutlineAddReaction, MdRemove, MdOutlineAltRoute, MdOutlineInfo, MdAltRoute, MdOutlineRoute } from 'react-icons/md';
+import { MdOutlineAddReaction, MdRemove, MdOutlineRefresh , MdOutlineInfo, MdAltRoute, MdOutlineRoute } from 'react-icons/md';
 
-const ButtonPanel = ({ onAdd, onRemove, onUpdate, onInfo, onNewConnect, selectedNodeText }) => {
+const ButtonPanel = ({ onAdd, onRemove, onUpdate, onInfo, onNewConnect, onRefresh, selectedNodeText }) => {
   
 
   return (
@@ -18,6 +18,7 @@ const ButtonPanel = ({ onAdd, onRemove, onUpdate, onInfo, onNewConnect, selected
       <button style={buttonStyle} onClick={onUpdate}><MdAltRoute style={{marginRight: "0.5em"}} /> Change Connection</button>
       <button style={buttonStyle} onClick={onRemove}><MdRemove style={{marginRight: "0.5em"}} /> Remove</button>
       <button style={buttonStyle} onClick={onInfo}><MdOutlineInfo style={{marginRight: "0.5em"}} /> Info</button>
+      <button style={buttonStyle} onClick={onRefresh}><MdOutlineRefresh style={{marginRight: "0.5em"}} /> Refresh</button>
       <div id='selected-node' >Selected node(s): {selectedNodeText}</div>
     </div>
   );

@@ -49,12 +49,11 @@ public class ConnectionController {
         Long sourceId = body.get("source");
         Long targetId = body.get("target");
 
-        Person source = personRepo.getReferenceById(sourceId);
-        Person target = personRepo.getReferenceById(targetId);
+        Person source = personRepo.findById(sourceId).orElse(null);
+        Person target = personRepo.findById(targetId).orElse(null);
 
         if (source == null || target == null)
             return null;
-
         Connection connection = new Connection();
         connection.setSource(source);
         connection.setTarget(target);
