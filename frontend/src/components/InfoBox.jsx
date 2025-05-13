@@ -1,19 +1,31 @@
 import React from 'react';
-import {MdClose, MdSaveAs} from 'react-icons/md';
+import { MdClose, MdSaveAs } from 'react-icons/md';
+import { fetchConnectionsById, fetchPersonById } from '../features/api';
 
 
-const InfoBox = ({ value: description = "Testing description box", onSubmit, onCancel, personName = "Test Name" }) => {
+const InfoBox = ({ onSubmit, onCancel, selectedNodeId }) => {
+
+  const person = fetchPersonById(selectedNodeId);
+  if (!person) {
+    return null; // or some loading state
+  }
+  const connections = fetchConnectionsById(selectedNodeId);
+  if (!connections) {
+    return null; // or some loading state
+  }
   return (
     <div style={overlayStyle}>
-        <button style={closeButtonStyle} onClick={onCancel}><MdClose /></button>
-        <h2>{personName} </h2>  
+      <button style={closeButtonStyle} onClick={onCancel}><MdClose /></button>
+      <h2>{person.name} </h2>
+      <h3>Connections: {connections}</h3>
+      <h3>Id: {person.id}</h3>
       <textarea
-        value={description}
+        value={person.description}
         placeholder={"Enter description here..."}
         style={inputStyle}
       />
       <div style={{ marginTop: '10px' }}>
-        <button style={buttonStyle} onClick={onSubmit}><MdSaveAs style={{marginRight: "0.5em"}} /> Update info</button>
+        <button style={buttonStyle} onClick={onSubmit}><MdSaveAs style={{ marginRight: "0.5em" }} /> Update info</button>
       </div>
     </div>
   );
@@ -56,14 +68,14 @@ const buttonStyle = {
 };
 
 const closeButtonStyle = {
-    display: 'flex',
-    padding: '0.45em 0.5em',
-    margin: '0 0',
-    backgroundColor: '#222',
-    color: 'white',
-    border: 'none',
-    borderRadius: '6px',
-    cursor: 'pointer',
-  };
+  display: 'flex',
+  padding: '0.45em 0.5em',
+  margin: '0 0',
+  backgroundColor: '#222',
+  color: 'white',
+  border: 'none',
+  borderRadius: '6px',
+  cursor: 'pointer',
+};
 
 export default InfoBox;

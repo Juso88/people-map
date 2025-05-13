@@ -16,6 +16,16 @@ export const fetchPeopleAndConnections = async () => {
   return { people, connections };
 };
 
+export const fetchConnectionsById = async (id) => {
+  const connections = await fetch(`http://localhost:8080/api/connections/${id}`, {
+    method: 'GET',
+  });
+  if (!connections.ok || connections.json === null) {
+    throw new Error(`Failed to fetch connections for person with id ${id}: ${connections.status}`);
+  }
+  return connections;
+}
+
 export const fetchPersonById = async (id) => {
   const person = await fetch(`http://localhost:8080/api/people/${id}`, {
     method: 'GET',

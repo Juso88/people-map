@@ -78,16 +78,9 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
   };
 
   const showInfoBox = () => {
-    if (!selectedNode) return null;
+    if (selectedNode === null) return null;
     setIsInfoBoxVisible(true);
-    return (
-      <InfoBox
-        value={selectedNode.description}
-        onSubmit={handleUpdate}
-        onCancel={() => setIsInfoBoxVisible(false)}
-        personName={selectedNode.name}
-      />
-    );
+    
   }
 
   return (
@@ -101,6 +94,7 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
         onInfo={showInfoBox}
         onNewConnect={handleNewConnect}
         onRefresh={refreshGraph}
+        onNodeClick={handleNodeClick}
         selectedNodeText={selectedNode !== null ? selectedNode.label : ""} />
       {/*<div style={{ position: 'absolute', top: '15em', right: '20px', padding: '10px', marginLeft: '10px', marginTop: '1em' , height: '1em'}}>
         <label> Add new person and connect to selected node immediately?
@@ -110,7 +104,13 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
         onChange={() => setImmediateConnect(!immediateConnect)}
       /></label>
       </div>*/}
-      {isInfoBoxVisible && showInfoBox()}
+      {isInfoBoxVisible && (
+      <InfoBox
+        onSubmit={handleUpdate}
+        onCancel={() => setIsInfoBoxVisible(false)}
+        selectedNode={selectedNode.index}
+      />
+    )}
 
       {inputMode && (
         <OverlayInput
