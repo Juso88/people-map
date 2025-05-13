@@ -1,6 +1,9 @@
 import React from 'react';
+import { MdOutlineAddReaction, MdRemove, MdOutlineAltRoute, MdOutlineInfo, MdAltRoute, MdOutlineRoute } from 'react-icons/md';
 
-const ButtonPanel = ({ onAdd, onRemove, onUpdate, selectedNodeText }) => {
+const ButtonPanel = ({ onAdd, onRemove, onUpdate, onInfo, onNewConnect, selectedNodeText }) => {
+  
+
   return (
     <div style={{
       position: 'absolute',
@@ -10,18 +13,20 @@ const ButtonPanel = ({ onAdd, onRemove, onUpdate, selectedNodeText }) => {
       flexDirection: 'column',
       gap: '10px'
     }}>
-      <button style={buttonStyle} onClick={onAdd}>+ Add</button>
-      <button style={buttonStyle} onClick={onUpdate}>~ Update</button>
-      <button style={buttonStyle} onClick={onRemove}>- Remove</button>
-      <div id='selected-node' >{selectedNodeText}</div>
+      <button style={buttonStyle} onClick={onAdd}><MdOutlineAddReaction style={{marginRight: "0.5em"}} /> Add</button>
+      <button style={buttonStyle} onClick={onNewConnect}><MdOutlineRoute style={{marginRight: "0.5em"}} /> New Connection</button>
+      <button style={buttonStyle} onClick={onUpdate}><MdAltRoute style={{marginRight: "0.5em"}} /> Change Connection</button>
+      <button style={buttonStyle} onClick={onRemove}><MdRemove style={{marginRight: "0.5em"}} /> Remove</button>
+      <button style={buttonStyle} onClick={onInfo}><MdOutlineInfo style={{marginRight: "0.5em"}} /> Info</button>
+      <div id='selected-node' >Selected node(s): {selectedNodeText}</div>
     </div>
   );
 };
 
 const buttonStyle = {
   width: 'auto',
-  height: '40px',
-  fontSize: '24px',
+  height: '1em',
+  fontSize: '1em',
   fontWeight: 'bold',
   borderRadius: '8px',
   border: '1px solid #ccc',
