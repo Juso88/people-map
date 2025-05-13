@@ -1,9 +1,19 @@
 GET http://localhost:8080/api/people
 GET http://localhost:8080/api/connections
 
+GET http://localhost:8080/api/people/31
+
 POST http://localhost:8080/api/people
 Content-Type: application/json
 
 {
   "name": "John Doe",
+}
+
+POST http://localhost:8080/api/people
+Content-Type: application/json
+
+{
+  "source": 1,
+  "target": 2,
 }

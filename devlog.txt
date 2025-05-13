@@ -36,3 +36,23 @@
         1. The graph dims.
         2. Overlay appears with input.
         3. Upon submit/cancel, returns to graph view
+
+05/13 - nathan
+- add description to people
+- add infobox
+    displays user information
+- change connection mappings to OneToOne
+    one to many doesn't make any sense becasue that means each link is going from multiple source ids to one single target. 
+    This would make sense if we keep track of connections inside of the people class but that's more work.
+- add update code paths
+    currently user can't update things just yet but working on it
+- change nodes id to be actual ids from database
+    this was blocking a lot of things but it turned out to be a really simple fix
+    now we can easily make sure we add, update, and remove the right things
+- add icons to buttons
+- add more buttons
+- add more api endpoints + matching functions
+TODO: 
+fix infobox
+fix multi selection
+implement new connection button
