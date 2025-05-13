@@ -15,7 +15,7 @@ const ButtonPanel = ({ onAdd, onRemove, onInfo, onNewConnect, onRefresh, selecte
       <button style={buttonStyle} onClick={onRemove}><MdRemove style={{ marginRight: "0.5em" }} /> Remove</button>
       <button style={buttonStyle} onClick={onInfo}><MdOutlineInfo style={{ marginRight: "0.5em" }} /> Info</button>
       <button style={buttonStyle} onClick={onRefresh}><MdOutlineRefresh style={{ marginRight: "0.5em" }} /> Refresh</button>
-      <div id='selected-node' >Selected node: {selectedNodeText}</div>
+      <div id='selected-node' style={{buttonStyle}} >Selected node: {selectedNodeText}</div>
     </div>
   );
 };
@@ -31,7 +31,6 @@ const buttonStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  cursor: 'pointer',
 };
 
 export default ButtonPanel;

@@ -91,11 +91,10 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
         zIndex: 1
       }}>
         <GradientBackground
-          gradient={[
-            [0, '#1e1e1e'],
-            [1, '#2d2d2d']
-          ]}
-          
+          size={{ min: 500, max: 700, pulse: 0.3 }}
+          speed={{ x: { min: 0.4, max: 1.5 }, y: { min: 0.4, max: 1.5 } }}
+          colors={{ background: 'transparent', particles: ['#ff681c', '#87ddfe', '#231efe'] }}
+          skew={0}
           style={{
             width: '100%',
             height: '100%'
