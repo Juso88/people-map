@@ -3,7 +3,7 @@ import GraphTitle from './GraphTitle';
 import GraphDisplay from './GraphDisplay';
 import ButtonPanel from './ButtonPanel';
 import OverlayInput from './OverlayInput';
-import { createPerson, createConnection, updateConnection, deleteConnectionByName, createPersonAndConnect, updatePerson } from '../features/api';
+import { createPerson, createConnection, updateConnection, deleteConnectionByName, createPersonAndConnect } from '../features/api';
 import InfoBox from './InfoBox';
 
 const GraphCanvas = ({ graphData, username, refreshGraph }) => {
@@ -83,6 +83,7 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
       <GraphTitle rootName={username} />
       <GraphDisplay graphData={graphData} nodeClickedFunction={handleNodeClick} />
+      
       <ButtonPanel
         onAdd={handleAdd}
         onRemove={handleRemove}

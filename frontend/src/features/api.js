@@ -99,7 +99,7 @@ export const updatePerson = async (id, newName, newDescription) => {
   if (!id || !newName) return;
   try {
     const res = await fetch(`http://localhost:8080/api/people/${id}`, {
-      method: 'PUT',
+      method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, newName, newDescription }),
     });

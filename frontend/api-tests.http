@@ -3,6 +3,13 @@ GET http://localhost:8080/api/connections
 
 GET http://localhost:8080/api/people/3
 
+PATCH http://localhost:8080/api/people/3
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "description": "Updated description"
+}
 
 
 POST http://localhost:8080/api/people
