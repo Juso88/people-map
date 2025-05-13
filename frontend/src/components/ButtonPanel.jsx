@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ButtonPanel = ({ onAdd, onRemove }) => {
+const ButtonPanel = ({ onAdd, onRemove, onUpdate }) => {
   return (
     <div style={{
       position: 'absolute',
@@ -10,14 +10,15 @@ const ButtonPanel = ({ onAdd, onRemove }) => {
       flexDirection: 'column',
       gap: '10px'
     }}>
-      <button style={buttonStyle} onClick={onAdd}>+</button>
-      <button style={buttonStyle} onClick={onRemove}>-</button>
+      <button style={buttonStyle} onClick={onAdd}>+ Add</button>
+      <button style={buttonStyle} onClick={onUpdate}>~ Update</button>
+      <button style={buttonStyle} onClick={onRemove}>- Remove</button>
     </div>
   );
 };
 
 const buttonStyle = {
-  width: '40px',
+  width: 'auto',
   height: '40px',
   fontSize: '24px',
   fontWeight: 'bold',
