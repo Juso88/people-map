@@ -9,6 +9,11 @@ const InfoBox = ({ onSubmit, onCancel, selectedNodeName }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!selectedNodeName) {
+        setIsLoading(false);
+        return;
+      }
+
       try {
         setIsLoading(true);
         const personData = await fetchPersonByName(selectedNodeName);
@@ -17,13 +22,15 @@ const InfoBox = ({ onSubmit, onCancel, selectedNodeName }) => {
         setConnections(connectionsData);
       } catch (error) {
         console.error('Error fetching data:', error);
+        setPerson(null);
+        setConnections(null);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [selectedNodeName]); // Only re-run when selectedNodeId changes
+  }, [selectedNodeName]); // Run effect when selectedNodeName changes
 
   if (isLoading) {
     return <div style={overlayStyle}>Loading...</div>;

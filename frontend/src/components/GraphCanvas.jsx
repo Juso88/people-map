@@ -80,7 +80,7 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
   const showInfoBox = () => {
     if (selectedNode === null) return null;
     setIsInfoBoxVisible(true);
-    
+
   }
 
   return (
@@ -105,12 +105,12 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
       /></label>
       </div>*/}
       {isInfoBoxVisible && (
-      <InfoBox
-        onSubmit={handleUpdate}
-        onCancel={() => setIsInfoBoxVisible(false)}
-        selectedNode={selectedNode.label}
-      />
-    )}
+        <InfoBox
+          onSubmit={handleUpdate}
+          onCancel={() => setIsInfoBoxVisible(false)}
+          selectedNodeName={selectedNode?.label} // Changed from selectedNode to selectedNodeName
+        />
+      )}
 
       {inputMode && (
         <OverlayInput
