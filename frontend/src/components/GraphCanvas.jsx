@@ -11,6 +11,8 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedNode, setSelectedNode] = useState(null);
   const [placeholderText, setPlaceholderText] = useState('');
+  const [isInfoBoxVisible, setIsInfoBoxVisible] = useState(false);
+  const [immediateConnect, setImmediateConnect] = useState(false);
 
 
   const handleAdd = () => {
@@ -45,7 +47,11 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
     }
 
     if (inputMode === 'add') {
-      await createPerson(inputValue);
+      if (immediateConnect) {
+        await createPersonAndConnect(selectedNode.label, inputValue);
+      } else {
+        await createPerson(inputValue);
+      }
     }
 
 
@@ -73,12 +79,12 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
 
   const showInfoBox = () => {
     if (!selectedNode) return null;
-
+    setIsInfoBoxVisible(true);
     return (
       <InfoBox
         value={selectedNode.description}
-        onSubmit={handleSubmit}
-        onCancel={() => setSelectedNode(null)}
+        onSubmit={handleUpdate}
+        onCancel={() => setIsInfoBoxVisible(false)}
         personName={selectedNode.name}
       />
     );
@@ -96,6 +102,15 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
         onNewConnect={handleNewConnect}
         onRefresh={refreshGraph}
         selectedNodeText={selectedNode !== null ? selectedNode.label : ""} />
+      {/*<div style={{ position: 'absolute', top: '15em', right: '20px', padding: '10px', marginLeft: '10px', marginTop: '1em' , height: '1em'}}>
+        <label> Add new person and connect to selected node immediately?
+      <input
+        type="checkbox"
+        checked={immediateConnect}
+        onChange={() => setImmediateConnect(!immediateConnect)}
+      /></label>
+      </div>*/}
+      {isInfoBoxVisible && showInfoBox()}
 
       {inputMode && (
         <OverlayInput

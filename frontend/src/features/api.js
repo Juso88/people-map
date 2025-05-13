@@ -41,8 +41,8 @@ export const createConnection = async (sourceName, targetName) => {
     const people = await peopleRes.json();
 
     // Find both users
-    const source = people.find(p => p.name === sourceName);
-    const target = people.find(p => p.name === targetName);
+    const source = people.find(p => p.name == sourceName);
+    const target = people.find(p => p.name == targetName);
     if (!source || !target) {
         console.error('Source or target person not found');
         return;

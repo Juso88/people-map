@@ -56,4 +56,3 @@
 TODO: 
 fix infobox
 fix multi selection
-implement new connection button
