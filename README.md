@@ -3,7 +3,8 @@ This app represents a visualizer of all the people you are connected with. Socia
 number; we wanted to remind people of what that looked like as this is easily forgettable.
 
 ## Team members
-### Julian Soriano : Started with a figma design, and built the app around that. Implemented a working '+' button to 'connect' to other users.
+### Julian Soriano : Started with a figma design, and built the app around that. Implemented the backend with Java Springboot,\
+frontend with React, database with PostgreSQL, and the logic of the app.
 ### Nathan Brown : Dockerized the app
 
 ## How to run
