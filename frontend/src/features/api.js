@@ -32,6 +32,21 @@ export const createConnection = async (sourceId, targetId) => {
   });
 };
 
+export const updateConnection = async (sourceId, oldTargetId, newTargetId) => {
+  if (!sourceId || !oldTargetId || !newTargetId) return;
+  try {
+  const res =  await fetch(`http://localhost:8080/api/connections/${sourceId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sourceId, oldTargetId, newTargetId }),
+  });
+  if (!res.ok) throw new Error(`Failed to update connection: ${res.status}`);
+  } catch (err) {
+    console.error('Failed to update connection:', err);
+    throw err;
+  }
+}
+
 export const deleteConnectionByName = async (name) => {
     if (!name) return;
     try {
