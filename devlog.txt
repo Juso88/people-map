@@ -16,3 +16,23 @@
             -send only sourceID and targetId
             -uses Map<String, Long> body
            update frontend onAdd (App.jsx) to send just IDs
+
+05/13 - julian
+-refactored App.jsx into separate files
+    1. GraphCanvas.jsx (main graph rendering and logic)
+    2. GraphDisplay.jsx (responsible only for rendering the graph using ForceGraph2D)
+    3. GraphTitle.jsx (top blue bar title)
+    4. ButtonPanel.jsx (add/remove buttons)
+    5. OverlayInput.jsx (custom input overlay replacing browser's prompt for a more consistent UI)
+-moved all API calls to features/api.js to keep API logic separate from UI logic.
+    1. fetchPeopleAndConnections
+    2. createPerson
+    3. createConnection
+    4. deleteConnection
+    5. deletePersonByName
+-backend update to support delete connection and person frontend feature
+-improved ui/ux:
+    when user clicks add/remove:
+        1. The graph dims.
+        2. Overlay appears with input.
+        3. Upon submit/cancel, returns to graph view
