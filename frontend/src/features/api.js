@@ -32,6 +32,21 @@ export const createConnection = async (sourceId, targetId) => {
   });
 };
 
+export const updatePerson = async (id, newName, newDescription) => {
+  if (!id || !newName) return;
+  try {
+    const res = await fetch(`http://localhost:8080/api/people/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, newName, newDescription }),
+    });
+    if (!res.ok) throw new Error(`Failed to update person: ${res.status}`);
+  } catch (err) {
+    console.error('Failed to update person:', err);
+    throw err;
+  }
+}
+
 export const updateConnection = async (sourceId, oldTargetId, newTargetId) => {
   if (!sourceId || !oldTargetId || !newTargetId) return;
   try {
