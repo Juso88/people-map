@@ -1,7 +1,7 @@
 GET http://localhost:8080/api/people
 GET http://localhost:8080/api/connections
 
-GET http://localhost:8080/api/people/31
+GET http://localhost:8080/api/people/3
 
 POST http://localhost:8080/api/people
 Content-Type: application/json

@@ -30,7 +30,14 @@ const InfoBox = ({ onSubmit, onCancel, selectedNodeId }) => {
   }
 
   if (!person || !connections) {
-    return <div style={overlayStyle}>No data found</div>;
+    return (
+
+      <div style={overlayStyle}>
+        <button style={closeButtonStyle} onClick={onCancel}><MdClose /></button>
+        <h2>Error</h2>
+        No data found
+      </div>
+    );
   }
 
   return (
@@ -91,6 +98,7 @@ const buttonStyle = {
 
 const closeButtonStyle = {
   display: 'flex',
+  float: 'right',
   padding: '0.45em 0.5em',
   margin: '0 0',
   backgroundColor: '#222',
