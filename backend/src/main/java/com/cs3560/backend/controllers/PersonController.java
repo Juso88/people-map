@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +36,17 @@ public class PersonController {
     public Person getPersonById(@PathVariable Long id) {
         return personRepo.findById(id).orElse(null);
     }
+    @PutMapping("/{id}")
+    public Person updatePerson(@PathVariable Long id, @RequestBody Person person) {
+        Person existingPerson = personRepo.findById(id).orElse(null);
+        if (existingPerson != null) {
+            existingPerson.setName(person.getName());
+            existingPerson.setDescription(person.getDescription());
+            return personRepo.save(existingPerson);
+        }
+        return null;
+    }
+
 
     @DeleteMapping("/{id}")
     public void deletePerson(@PathVariable Long id) {
