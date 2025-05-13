@@ -3,7 +3,7 @@ import GraphTitle from './GraphTitle';
 import GraphDisplay from './GraphDisplay';
 import ButtonPanel from './ButtonPanel';
 import OverlayInput from './OverlayInput';
-import { createPerson, createConnection, updateConnection, deleteConnectionByName, createPersonAndConnect } from '../features/api';
+import { createPerson, createConnection, updateConnection, deleteConnectionByName, createPersonAndConnect, updatePerson } from '../features/api';
 import InfoBox from './InfoBox';
 
 const GraphCanvas = ({ graphData, username, refreshGraph }) => {
@@ -28,11 +28,7 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
     setPlaceholderText('Enter name to remove...');
   };
 
-  const handleUpdate = () => {
-    setInputMode('update');
-    setInputValue('');
 
-  };
 
   const handleNewConnect = () => {
     setInputMode('newConnect');
@@ -90,7 +86,6 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
       <ButtonPanel
         onAdd={handleAdd}
         onRemove={handleRemove}
-        onUpdate={handleUpdate}
         onInfo={showInfoBox}
         onNewConnect={handleNewConnect}
         onRefresh={refreshGraph}
@@ -106,7 +101,6 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
       </div>*/}
       {isInfoBoxVisible && (
         <InfoBox
-          onSubmit={handleUpdate}
           onCancel={() => setIsInfoBoxVisible(false)}
           selectedNodeName={selectedNode?.label} // Changed from selectedNode to selectedNodeName
         />

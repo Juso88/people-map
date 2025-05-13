@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { MdClose, MdSaveAs } from 'react-icons/md';
-import { fetchConnectionsById, fetchPersonByName } from '../features/api';
+import { fetchConnectionsById, fetchPersonByName, updatePerson } from '../features/api';
 
-const InfoBox = ({ onSubmit, onCancel, selectedNodeName }) => {
+const InfoBox = ({ onCancel, selectedNodeName }) => {
   const [person, setPerson] = useState(null);
   const [connections, setConnections] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,8 +49,13 @@ const InfoBox = ({ onSubmit, onCancel, selectedNodeName }) => {
 
   return (
     <div style={overlayStyle}>
-      <button style={closeButtonStyle} onClick={onCancel}><MdClose /></button>
-      <h2>{person.name}</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+        <input style={
+          { bigNameStyle }
+        } type="text"
+          defaultValue={person.name} />
+        <button style={closeButtonStyle} onClick={onCancel}><MdClose /></button>
+      </div>
       <div>
         Connections:
         {connections.map(conn => (
@@ -66,13 +71,29 @@ const InfoBox = ({ onSubmit, onCancel, selectedNodeName }) => {
         style={inputStyle}
       />
       <div style={{ marginTop: '10px' }}>
-        <button style={buttonStyle} onClick={onSubmit}>
+        <button style={buttonStyle} onClick={
+          async () => {
+            await updatePerson(person.id, person.description);
+            onCancel();
+          }
+        }>
           <MdSaveAs style={{ marginRight: "0.5em" }} /> Update info
         </button>
       </div>
     </div>
   );
 };
+
+const bigNameStyle = {
+  padding: '10px',
+  fontSize: '3em',
+height: '1em',
+  fontWeight: 'bold',
+  width: 'auto',
+  borderRadius: '0px',
+  border: '0px'
+}
+
 
 const overlayStyle = {
   position: 'absolute',
