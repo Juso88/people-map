@@ -51,8 +51,15 @@ const InfoBox = ({ onSubmit, onCancel, selectedNodeName }) => {
     <div style={overlayStyle}>
       <button style={closeButtonStyle} onClick={onCancel}><MdClose /></button>
       <h2>{person.name}</h2>
-      <h3>Connections: {connections}</h3>
-      <h3>Id: {person.id}</h3>
+      <div>
+        Connections:
+        {connections.map(conn => (
+          <div key={conn.id}>
+            {conn.source.name === person.name ? conn.target.name : conn.source.name}
+          </div>
+        ))}
+      </div>
+      <div>Id: {person.id}</div>
       <textarea
         value={person.description}
         placeholder={"Enter description here..."}
