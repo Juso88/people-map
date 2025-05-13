@@ -9,9 +9,8 @@ const InfoBox = ({ value: description = "Testing description box", onSubmit, onC
         <h2>{personName} </h2>  
       <textarea
         value={description}
-        placeholder={personName}
+        placeholder={"Enter description here..."}
         style={inputStyle}
-        autoFocus
       />
       <div style={{ marginTop: '10px' }}>
         <button style={buttonStyle} onClick={onSubmit}><MdSaveAs style={{marginRight: "0.5em"}} /> Update info</button>
