@@ -34,10 +34,10 @@ public class ConnectionController {
     }
 
     @GetMapping("/{id}")
-    public List<Connection> getAllConnectionsForId(@RequestBody Map<String, Long> body) {
-        Long id = body.get("id");
-        if (id == null)
+    public List<Connection> getAllConnectionsForId(@PathVariable Long id) {
+        if (id == null) {
             return null;
+        }
 
         return connectionRepo.findAll().stream()
                 .filter(c -> c.getSource().getId().equals(id) || c.getTarget().getId().equals(id))

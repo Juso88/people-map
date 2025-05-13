@@ -108,7 +108,7 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
       <InfoBox
         onSubmit={handleUpdate}
         onCancel={() => setIsInfoBoxVisible(false)}
-        selectedNode={selectedNode.index}
+        selectedNode={selectedNode.label}
       />
     )}
 

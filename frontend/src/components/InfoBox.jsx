@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { MdClose, MdSaveAs } from 'react-icons/md';
-import { fetchConnectionsById, fetchPersonById } from '../features/api';
+import { fetchConnectionsById, fetchPersonByName } from '../features/api';
 
-const InfoBox = ({ onSubmit, onCancel, selectedNodeId }) => {
+const InfoBox = ({ onSubmit, onCancel, selectedNodeName }) => {
   const [person, setPerson] = useState(null);
   const [connections, setConnections] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -11,8 +11,8 @@ const InfoBox = ({ onSubmit, onCancel, selectedNodeId }) => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const personData = await fetchPersonById(selectedNodeId);
-        const connectionsData = await fetchConnectionsById(selectedNodeId);
+        const personData = await fetchPersonByName(selectedNodeName);
+        const connectionsData = await fetchConnectionsById(personData.id);
         setPerson(personData);
         setConnections(connectionsData);
       } catch (error) {
@@ -23,7 +23,7 @@ const InfoBox = ({ onSubmit, onCancel, selectedNodeId }) => {
     };
 
     fetchData();
-  }, [selectedNodeId]); // Only re-run when selectedNodeId changes
+  }, [selectedNodeName]); // Only re-run when selectedNodeId changes
 
   if (isLoading) {
     return <div style={overlayStyle}>Loading...</div>;
