@@ -9,10 +9,13 @@ public class Connection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "source_person")
+    @MapsId
     private Person source;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "target_person")
     private Person target;
 
     public Long getId() {
