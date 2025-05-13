@@ -35,11 +35,22 @@ export const createPerson = async (name) => {
   });
 };
 
-export const createConnection = async (source, target) => {
+export const createConnection = async (sourceName, targetName) => {
+  // Fetch latest people list
+    const peopleRes = await fetch('http://localhost:8080/api/people');
+    const people = await peopleRes.json();
+
+    // Find both users
+    const source = people.find(p => p.name === sourceName);
+    const target = people.find(p => p.name === targetName);
+    if (!source || !target) {
+        console.error('Source or target person not found');
+        return;
+    }
   await fetch('http://localhost:8080/api/connections', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ source, target }),
+    body: JSON.stringify({ source:source.id, target:target.id }),
   });
 };
 
@@ -102,6 +113,6 @@ export const createPersonAndConnect = async (currentUsername, newName) => {
 
     // Create connection if both exist
     if (source && target) {
-        await createConnection(source.id, target.id);
+        await createConnection(source, target);
     }
 };

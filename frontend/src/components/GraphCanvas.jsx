@@ -10,21 +10,32 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
   const [inputMode, setInputMode] = useState(null); // 'add' or 'remove'
   const [inputValue, setInputValue] = useState('');
   const [selectedNode, setSelectedNode] = useState(null);
-  
+  const [placeholderText, setPlaceholderText] = useState('');
+
 
   const handleAdd = () => {
     setInputMode('add');
     setInputValue('');
+    setPlaceholderText('Enter name of new person...');
   };
 
+  //should always spawn a dialog to remove a person, don't want to do it by accident.
   const handleRemove = () => {
     setInputMode('remove');
     setInputValue('');
+    setPlaceholderText('Enter name to remove...');
   };
 
   const handleUpdate = () => {
     setInputMode('update');
     setInputValue('');
+
+  };
+
+  const handleNewConnect = () => {
+    setInputMode('newConnect');
+    setInputValue('');
+    setPlaceholderText('Enter name to connect to selected node...');
   };
 
   const handleSubmit = async () => {
@@ -35,11 +46,13 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
 
     if (inputMode === 'add') {
       await createPersonAndConnect(username, inputValue);
+      return;
     }
 
 
     if (inputMode === 'remove') {
       await deleteConnectionByName(inputValue);
+      return;
     }
 
     //if the update comes from the button, we should update connection.
@@ -47,21 +60,24 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
     if (inputMode === 'update') {
       const [oldTargetId, newTargetId] = inputValue.split(' ');
       await updateConnection(username, oldTargetId, newTargetId);
+      return;
     }
 
+    if (inputMode === 'newConnect') {
+      await createConnection(selectedNode.label, inputValue);
+      return;
+    }
     setInputMode(null);
     await refreshGraph();
   };
   const handleNodeClick = (node) => {
     setSelectedNode(node);
-    if (node) {showInfoBox();}
-    else {setSelectedNode(null);}
     return;
   };
 
   const showInfoBox = () => {
     if (!selectedNode) return null;
-    
+
     return (
       <InfoBox
         value={selectedNode.description}
@@ -74,9 +90,15 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-      <GraphTitle rootName={username}/>
+      <GraphTitle rootName={username} />
       <GraphDisplay graphData={graphData} nodeClickedFunction={handleNodeClick} />
-      <ButtonPanel onAdd={handleAdd} onRemove={handleRemove} onUpdate={handleUpdate} selectedNodeText={selectedNode} />
+      <ButtonPanel
+        onAdd={handleAdd}
+        onRemove={handleRemove}
+        onUpdate={handleUpdate}
+        onInfo={showInfoBox}
+        onNewConnect={handleNewConnect}
+        selectedNodeText={selectedNode !== null ? selectedNode.label : ""} />
 
       {inputMode && (
         <OverlayInput
@@ -84,7 +106,7 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
           onChange={(e) => setInputValue(e.target.value)}
           onSubmit={handleSubmit}
           onCancel={() => setInputMode(null)}
-          placeholder={inputMode === 'add' ? "Enter name to connect..." : "Enter name to remove..."}
+          placeholder={placeholderText}
         />
       )}
     </div>

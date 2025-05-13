@@ -52,6 +52,7 @@
 - add icons to buttons
 - add more buttons
 - add more api endpoints + matching functions
+- made input overlay box more extendable
 TODO: 
 fix infobox
 fix multi selection

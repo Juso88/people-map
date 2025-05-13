@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
 @RestController
 @RequestMapping("/api/connections")
 public class ConnectionController {
@@ -37,22 +36,24 @@ public class ConnectionController {
     @GetMapping("/{id}")
     public List<Connection> getAllConnectionsForId(@RequestBody Map<String, Long> body) {
         Long id = body.get("id");
-        if (id == null) return null;
+        if (id == null)
+            return null;
 
         return connectionRepo.findAll().stream()
-            .filter(c -> c.getSource().getId().equals(id) || c.getTarget().getId().equals(id))
-            .toList();
+                .filter(c -> c.getSource().getId().equals(id) || c.getTarget().getId().equals(id))
+                .toList();
     }
 
     @PostMapping
-        public Connection createConnection(@RequestBody Map<String, Long> body) {
-        Long sourceId = body.get("sourceId");
-        Long targetId = body.get("targetId");
+    public Connection createConnection(@RequestBody Map<String, Long> body) {
+        Long sourceId = body.get("source");
+        Long targetId = body.get("target");
 
-        Person source = personRepo.findById(sourceId).orElse(null);
-        Person target = personRepo.findById(targetId).orElse(null);
+        Person source = personRepo.getReferenceById(sourceId);
+        Person target = personRepo.getReferenceById(targetId);
 
-        if (source == null || target == null) return null;
+        if (source == null || target == null)
+            return null;
 
         Connection connection = new Connection();
         connection.setSource(source);
@@ -66,18 +67,20 @@ public class ConnectionController {
         Long sourceId = body.get("sourceId");
         Long oldTargetId = body.get("oldTargetId");
         Long newTargetId = body.get("newTargetId");
-        if (sourceId == null || oldTargetId == null || newTargetId == null) return "Invalid input";
+        if (sourceId == null || oldTargetId == null || newTargetId == null)
+            return "Invalid input";
 
         Person source = personRepo.findById(sourceId).orElse(null);
         Person oldTarget = personRepo.findById(oldTargetId).orElse(null);
         Person newTarget = personRepo.findById(newTargetId).orElse(null);
-        if (source == null || oldTarget == null || newTarget == null) return "Source or Target not found";
+        if (source == null || oldTarget == null || newTarget == null)
+            return "Source or Target not found";
 
         // Delete the old connection
         // Delete all connections where the person is involved
         List<Connection> toDelete = connectionRepo.findAll().stream()
-            .filter(c -> c.getSource().getId().equals(sourceId) || c.getTarget().getId().equals(oldTargetId))
-            .toList();
+                .filter(c -> c.getSource().getId().equals(sourceId) || c.getTarget().getId().equals(oldTargetId))
+                .toList();
 
         connectionRepo.deleteAll(toDelete);
 
@@ -95,23 +98,22 @@ public class ConnectionController {
     public void deleteConnectionsAndPersonByName(@PathVariable String name) {
         // Find the person by name
         Person person = personRepo.findAll().stream()
-            .filter(p -> p.getName().equals(name))
-            .findFirst()
-            .orElse(null);
+                .filter(p -> p.getName().equals(name))
+                .findFirst()
+                .orElse(null);
 
-        if (person == null) return;
+        if (person == null)
+            return;
 
         // Delete all connections where the person is involved
         List<Connection> toDelete = connectionRepo.findAll().stream()
-            .filter(c -> c.getSource().getName().equals(name) || c.getTarget().getName().equals(name))
-            .toList();
+                .filter(c -> c.getSource().getName().equals(name) || c.getTarget().getName().equals(name))
+                .toList();
 
         connectionRepo.deleteAll(toDelete);
 
         // Finally, delete the person
         personRepo.delete(person);
     }
-
-
 
 }
