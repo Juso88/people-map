@@ -1,19 +1,23 @@
 import React from 'react';
-import {MdClose, MdSaveAs} from 'react-icons/md';
+import { MdClose, MdSaveAs } from 'react-icons/md';
 
+const InfoBox = ({ value: description = "Testing description box", onSubmit, onCancel, personName = "Test Name", isVisible }) => {
+  const displayStyle = {
+    ...overlayStyle,
+    display: isVisible ? 'flex' : 'none'
+  };
 
-const InfoBox = ({ value: description = "Testing description box", onSubmit, onCancel, personName = "Test Name" }) => {
   return (
-    <div style={overlayStyle}>
-        <button style={closeButtonStyle} onClick={onCancel}><MdClose /></button>
-        <h2>{personName} </h2>  
+    <div style={displayStyle}>
+      <button style={closeButtonStyle} onClick={() => onCancel(false)}><MdClose /></button>
+      <h2>{personName}</h2>
       <textarea
         value={description}
         placeholder={"Enter description here..."}
         style={inputStyle}
       />
       <div style={{ marginTop: '10px' }}>
-        <button style={buttonStyle} onClick={onSubmit}><MdSaveAs style={{marginRight: "0.5em"}} /> Update info</button>
+        <button style={buttonStyle} onClick={onSubmit}><MdSaveAs style={{ marginRight: "0.5em" }} /> Update info</button>
       </div>
     </div>
   );
@@ -56,14 +60,14 @@ const buttonStyle = {
 };
 
 const closeButtonStyle = {
-    display: 'flex',
-    padding: '0.45em 0.5em',
-    margin: '0 0',
-    backgroundColor: '#222',
-    color: 'white',
-    border: 'none',
-    borderRadius: '6px',
-    cursor: 'pointer',
-  };
+  display: 'flex',
+  padding: '0.45em 0.5em',
+  margin: '0 0',
+  backgroundColor: '#222',
+  color: 'white',
+  border: 'none',
+  borderRadius: '6px',
+  cursor: 'pointer',
+};
 
 export default InfoBox;
