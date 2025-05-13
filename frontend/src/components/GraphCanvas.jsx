@@ -5,6 +5,8 @@ import ButtonPanel from './ButtonPanel';
 import OverlayInput from './OverlayInput';
 import { createPerson, createConnection, updateConnection, deleteConnectionByName, createPersonAndConnect } from '../features/api';
 import InfoBox from './InfoBox';
+import { GradientBackground } from "react-gradient-animation";
+
 
 const GraphCanvas = ({ graphData, username, refreshGraph }) => {
   const [inputMode, setInputMode] = useState(null); // 'add' or 'remove'
@@ -81,41 +83,97 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-      <GraphTitle rootName={username} />
-      <GraphDisplay graphData={graphData} nodeClickedFunction={handleNodeClick} />
-      
-      <ButtonPanel
-        onAdd={handleAdd}
-        onRemove={handleRemove}
-        onInfo={showInfoBox}
-        onNewConnect={handleNewConnect}
-        onRefresh={refreshGraph}
-        onNodeClick={handleNodeClick}
-        selectedNodeText={selectedNode !== null ? selectedNode.label : ""} />
-      {/*<div style={{ position: 'absolute', top: '15em', right: '20px', padding: '10px', marginLeft: '10px', marginTop: '1em' , height: '1em'}}>
-        <label> Add new person and connect to selected node immediately?
-      <input
-        type="checkbox"
-        checked={immediateConnect}
-        onChange={() => setImmediateConnect(!immediateConnect)}
-      /></label>
-      </div>*/}
-      {isInfoBoxVisible && (
-        <InfoBox
-          onCancel={() => setIsInfoBoxVisible(false)}
-          selectedNodeName={selectedNode?.label} // Changed from selectedNode to selectedNodeName
+      {/* Gradient Background Layer - Lowest z-index */}
+      <div style={{
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        zIndex: 1
+      }}>
+        <GradientBackground
+          gradient={[
+            [0, '#1e1e1e'],
+            [1, '#2d2d2d']
+          ]}
+          
+          style={{
+            width: '100%',
+            height: '100%'
+          }}
         />
-      )}
+      </div>
 
-      {inputMode && (
-        <OverlayInput
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onSubmit={handleSubmit}
-          onCancel={() => setInputMode(null)}
-          placeholder={placeholderText}
+      {/* Graph Layer */}
+      <div style={{
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        zIndex: 2
+      }}>
+        <GraphDisplay
+          graphData={graphData}
+          nodeClickedFunction={handleNodeClick}
         />
-      )}
+      </div>
+
+      {/* UI Layer - Highest z-index */}
+      <div style={{
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        zIndex: 3,
+        pointerEvents: 'none'
+      }}>
+        {/* Title */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          width: '100%',
+          pointerEvents: 'auto'
+        }}>
+          <GraphTitle rootName={username} />
+        </div>
+
+        {/* Button Panel */}
+        <div style={{
+          position: 'absolute',
+          top: '5em',
+          right: '1em',
+          pointerEvents: 'auto'
+        }}>
+          <ButtonPanel
+            onAdd={handleAdd}
+            onRemove={handleRemove}
+            onInfo={showInfoBox}
+            onNewConnect={handleNewConnect}
+            onRefresh={refreshGraph}
+            onNodeClick={handleNodeClick}
+            selectedNodeText={selectedNode !== null ? selectedNode.label : ""}
+          />
+        </div>
+
+        {/* Overlays */}
+        {isInfoBoxVisible && (
+          <div style={{ pointerEvents: 'auto' }}>
+            <InfoBox
+              onCancel={() => setIsInfoBoxVisible(false)}
+              selectedNodeName={selectedNode?.label}
+            />
+          </div>
+        )}
+
+        {inputMode && (
+          <div style={{ pointerEvents: 'auto' }}>
+            <OverlayInput
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onSubmit={handleSubmit}
+              onCancel={() => setInputMode(null)}
+              placeholder={placeholderText}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

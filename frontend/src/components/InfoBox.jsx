@@ -50,9 +50,10 @@ const InfoBox = ({ onCancel, selectedNodeName }) => {
   return (
     <div style={overlayStyle}>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-        <input style={
-          { bigNameStyle }
-        } type="text"
+        <input
+          id='name'
+          type="text"
+          style={bigNameStyle}
           defaultValue={person.name} />
         <button style={closeButtonStyle} onClick={onCancel}><MdClose /></button>
       </div>
@@ -66,6 +67,7 @@ const InfoBox = ({ onCancel, selectedNodeName }) => {
       </div>
       <div>Id: {person.id}</div>
       <textarea
+        id='description'    
         value={person.description}
         placeholder={"Enter description here..."}
         style={inputStyle}
@@ -73,7 +75,7 @@ const InfoBox = ({ onCancel, selectedNodeName }) => {
       <div style={{ marginTop: '10px' }}>
         <button style={buttonStyle} onClick={
           async () => {
-            await updatePerson(person.id, person.description);
+            await updatePerson(person.id, document.getElementById('name').value, document.getElementById('description').value,);
             onCancel();
           }
         }>
@@ -87,7 +89,7 @@ const InfoBox = ({ onCancel, selectedNodeName }) => {
 const bigNameStyle = {
   padding: '10px',
   fontSize: '3em',
-height: '1em',
+  height: '1em',
   fontWeight: 'bold',
   width: 'auto',
   borderRadius: '0px',
@@ -129,6 +131,7 @@ const buttonStyle = {
   alignItems: 'center',
   display: 'flex',
   justifyContent: 'center',
+  
 };
 
 const closeButtonStyle = {
@@ -141,6 +144,8 @@ const closeButtonStyle = {
   border: 'none',
   borderRadius: '6px',
   cursor: 'pointer',
+  height: '2.5rem',
+  width: '2.5rem'
 };
 
 export default InfoBox;
