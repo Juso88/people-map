@@ -1,7 +1,7 @@
 // src/components/GraphCanvas/GraphTitle.jsx
 import React from 'react';
 
-const GraphTitle = () => (
+const GraphTitle = ({rootName}) => (
   <div
     style={{
       backgroundColor: 'skyblue',
@@ -16,7 +16,7 @@ const GraphTitle = () => (
       zIndex: 2
     }}
   >
-    People-Map
+    {rootName}'s People-Map
   </div>
 );
 

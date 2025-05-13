@@ -40,7 +40,7 @@ const GraphCanvas = ({ graphData, username, refreshGraph }) => {
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-      <GraphTitle />
+      <GraphTitle rootName={username}/>
       <GraphDisplay graphData={graphData} />
       <ButtonPanel onAdd={handleAdd} onRemove={handleRemove} />
 
