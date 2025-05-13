@@ -16,15 +16,18 @@ If any errors persist, it may be because you need to run 'npm install...' as our
 ## Features implemented
 -Has a nice bootup for first time users that walks you through typical user flow.\
 -Has a '+' button to add people you know and connect to their nodes.\
--Has a '-' button.
+-Has a '-' button to remove people you are connected to.\
+-Saves the current graph info (names, connections) in Postgres database
 
 ## Future work
--Finish the '-' button to remove nodes and connections with people.\
--Add in a feature to save the data that a user enters.\
+-Add in a feature to save the data that a user enters after closing and opening the app.\
+-Currently, doesn't have a userbase, or a login system.\
+-Adding a person that is already in the database should show all the nodes they are associated, and\
+the user can choose to add connections to those nodes, or ignore them.\
 -Show the user the nodes that they are connected to (the names that they specifically add) and differentiate between\
-the nodes that their added is associated with.
+the nodes that their added is associated with.\
+-Hosting
 
 ## Known issues
--The '+' and '-' buttons are not centered\
 -The app also does not have a login feature yet, so it does not save any\
 of the names added which is not intended.
