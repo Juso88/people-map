@@ -1,22 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MdClose, MdSaveAs } from 'react-icons/md';
 import { fetchConnectionsById, fetchPersonById } from '../features/api';
 
-
 const InfoBox = ({ onSubmit, onCancel, selectedNodeId }) => {
+  const [person, setPerson] = useState(null);
+  const [connections, setConnections] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const person = fetchPersonById(selectedNodeId);
-  if (!person) {
-    return null; // or some loading state
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const personData = await fetchPersonById(selectedNodeId);
+        const connectionsData = await fetchConnectionsById(selectedNodeId);
+        setPerson(personData);
+        setConnections(connectionsData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [selectedNodeId]); // Only re-run when selectedNodeId changes
+
+  if (isLoading) {
+    return <div style={overlayStyle}>Loading...</div>;
   }
-  const connections = fetchConnectionsById(selectedNodeId);
-  if (!connections) {
-    return null; // or some loading state
+
+  if (!person || !connections) {
+    return <div style={overlayStyle}>No data found</div>;
   }
+
   return (
     <div style={overlayStyle}>
       <button style={closeButtonStyle} onClick={onCancel}><MdClose /></button>
-      <h2>{person.name} </h2>
+      <h2>{person.name}</h2>
       <h3>Connections: {connections}</h3>
       <h3>Id: {person.id}</h3>
       <textarea
@@ -25,7 +45,9 @@ const InfoBox = ({ onSubmit, onCancel, selectedNodeId }) => {
         style={inputStyle}
       />
       <div style={{ marginTop: '10px' }}>
-        <button style={buttonStyle} onClick={onSubmit}><MdSaveAs style={{ marginRight: "0.5em" }} /> Update info</button>
+        <button style={buttonStyle} onClick={onSubmit}>
+          <MdSaveAs style={{ marginRight: "0.5em" }} /> Update info
+        </button>
       </div>
     </div>
   );
