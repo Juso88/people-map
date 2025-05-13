@@ -12,7 +12,7 @@ const App = () => {
   const refreshGraph = async () => {
     try {
       const { people, connections } = await fetchPeopleAndConnections();
-      const nodes = people.map(p => ({ id: p.id, label: p.name }));
+      const nodes = people.map(p => ({ id: p.name, label: p.name }));
       const links = connections.map(c => ({ source: c.source.name, target: c.target.name }));
       setGraphData({ nodes, links });
     } catch (err) {
