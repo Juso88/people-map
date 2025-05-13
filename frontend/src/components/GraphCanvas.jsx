@@ -1,50 +1,58 @@
-// src/components/GraphCanvas/GraphCanvas.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import GraphTitle from './GraphTitle';
 import GraphDisplay from './GraphDisplay';
 import ButtonPanel from './ButtonPanel';
-import { createPerson, createConnection, deleteConnection } from '../features/api';
+import OverlayInput from './OverlayInput';
+import { createPerson, createConnection, deleteConnectionByName, createPersonAndConnect } from '../features/api';
 
 const GraphCanvas = ({ graphData, username, refreshGraph }) => {
+  const [inputMode, setInputMode] = useState(null); // 'add' or 'remove'
+  const [inputValue, setInputValue] = useState('');
 
-  const handleAdd = async () => {
-    const newName = prompt("Enter name to connect:");
-    if (!newName || !username) return;
-
-    await createPerson(newName);
-
-    const peopleRes = await fetch('http://localhost:8080/api/people');
-    const people = await peopleRes.json();
-    const source = people.find(p => p.name === username);
-    const target = people.find(p => p.name === newName);
-
-    if (source && target) {
-      await createConnection(source.id, target.id);
-    }
-
-    await refreshGraph();
+  const handleAdd = () => {
+    setInputMode('add');
+    setInputValue('');
   };
 
-  const handleRemove = async () => {
-    const nameToRemove = prompt("Enter name you want to remove:");
-    if (!nameToRemove) return;
+  const handleRemove = () => {
+    setInputMode('remove');
+    setInputValue('');
+  };
 
-    try {
-        await fetch(`http://localhost:8080/api/connections/by-name/${nameToRemove}`, {
-            method: 'DELETE'
-        });
-        await refreshGraph();
-    } catch (err) {
-        console.error("Failed to remove connection:", err);
+  const handleSubmit = async () => {
+    if (!inputValue.trim() || !username) {
+      setInputMode(null);
+      return;
     }
-};
 
+    if (inputMode === 'add') {
+      await createPersonAndConnect(username, inputValue);
+    }
+
+
+    if (inputMode === 'remove') {
+      await deleteConnectionByName(inputValue);
+    }
+
+    setInputMode(null);
+    await refreshGraph();
+  };
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
       <GraphTitle />
       <GraphDisplay graphData={graphData} />
       <ButtonPanel onAdd={handleAdd} onRemove={handleRemove} />
+
+      {inputMode && (
+        <OverlayInput
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onSubmit={handleSubmit}
+          onCancel={() => setInputMode(null)}
+          placeholder={inputMode === 'add' ? "Enter name to connect..." : "Enter name to remove..."}
+        />
+      )}
     </div>
   );
 };

@@ -32,8 +32,35 @@ export const createConnection = async (sourceId, targetId) => {
   });
 };
 
-export const deleteConnection = async (connectionId) => {
-    await fetch(`http://localhost:8080/api/connections/${connectionId}`, {
-        method: 'DELETE',
-    });
+export const deleteConnectionByName = async (name) => {
+    if (!name) return;
+    try {
+        const res = await fetch(`http://localhost:8080/api/connections/by-name/${name}`, {
+            method: 'DELETE',
+        });
+        if (!res.ok) throw new Error(`Failed to delete: ${res.status}`);
+    } catch (err) {
+        console.error('Failed to remove connections and person by name:', err);
+        throw err;
+    }
+};
+
+export const createPersonAndConnect = async (currentUsername, newName) => {
+    if (!newName || !currentUsername) return;
+
+    // Ensure the new person exists
+    await createPerson(newName);
+
+    // Fetch latest people list
+    const peopleRes = await fetch('http://localhost:8080/api/people');
+    const people = await peopleRes.json();
+
+    // Find both users
+    const source = people.find(p => p.name === currentUsername);
+    const target = people.find(p => p.name === newName);
+
+    // Create connection if both exist
+    if (source && target) {
+        await createConnection(source.id, target.id);
+    }
 };
