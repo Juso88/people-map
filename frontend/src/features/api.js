@@ -16,6 +16,17 @@ export const fetchPeopleAndConnections = async () => {
   return { people, connections };
 };
 
+export const fetchPersonById = async (id) => {
+  const person = await fetch(`http://localhost:8080/api/people/${id}`, {
+    method: 'GET',
+  });
+  if (!person.ok || person.json === null) {
+    throw new Error(`Failed to fetch person with id ${id}: ${person.status}`);
+  }
+  return person;
+};
+
+
 export const createPerson = async (name) => {
   await fetch('http://localhost:8080/api/people', {
     method: 'POST',
@@ -24,11 +35,11 @@ export const createPerson = async (name) => {
   });
 };
 
-export const createConnection = async (sourceId, targetId) => {
+export const createConnection = async (source, target) => {
   await fetch('http://localhost:8080/api/connections', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sourceId, targetId }),
+    body: JSON.stringify({ source, target }),
   });
 };
 

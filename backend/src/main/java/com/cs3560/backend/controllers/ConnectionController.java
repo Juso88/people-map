@@ -34,6 +34,16 @@ public class ConnectionController {
         return connectionRepo.findAll();
     }
 
+    @GetMapping("/{id}")
+    public List<Connection> getAllConnectionsForId(@RequestBody Map<String, Long> body) {
+        Long id = body.get("id");
+        if (id == null) return null;
+
+        return connectionRepo.findAll().stream()
+            .filter(c -> c.getSource().getId().equals(id) || c.getTarget().getId().equals(id))
+            .toList();
+    }
+
     @PostMapping
         public Connection createConnection(@RequestBody Map<String, Long> body) {
         Long sourceId = body.get("sourceId");
